@@ -89,7 +89,7 @@ describe('cursor', function () {
     });
   });
 
-  describe('skip', function () {
+  xdescribe('skip', function () {
     it('should return cursor', function () {
       var res = test.find().skip();
       res.should.be.instanceOf(comongo.Cursor);

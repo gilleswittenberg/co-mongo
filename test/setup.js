@@ -17,8 +17,11 @@ beforeEach(function (done) {
         exports.test = new comongo.Collection(test);
         test.insert({ hello: 'world' }, function (err, doc) {
           if (err) return done(err);
-          exports._id = doc[0]._id.toString();
-          db.createIndex('test_collection', { hello: 1 }, done);
+          res = test.findOne({ hello: 'world'}, function (err, doc) {
+            if (err) return done(err);
+            exports._id = doc._id.toString();
+            db.createIndex('test_collection', { hello: 1 }, done);
+          });
         });
       });
     });

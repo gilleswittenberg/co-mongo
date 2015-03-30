@@ -15,9 +15,10 @@ describe('collection', function () {
   describe('insert', function () {
     it('should insert', function (done) {
       co(function *() {
-        var res = yield test.insert({ hello: 'thom' });
-        res[0].should.have.keys(['hello', '_id']);
-        res[0].hello.should.equal('thom');
+        yield test.insert({ hello: 'thom' });
+        var res = yield test.findOne({hello: 'thom'});
+        res.should.have.keys(['hello', '_id']);
+        res.hello.should.equal('thom');
       })(done);
     });
   });
@@ -26,7 +27,7 @@ describe('collection', function () {
     it('should remove', function (done) {
       co(function *() {
         var res = yield test.remove({ hello: 'world' });
-        res[0].should.equal(1);
+        res.result.ok.should.equal(1);
       })(done);
     });
   });
@@ -43,7 +44,8 @@ describe('collection', function () {
   describe('save', function () {
     it('should save', function (done) {
       co(function *() {
-        var res = yield test.save({ hello: 'thom' });
+        yield test.save({ hello: 'thom' });
+        var res = yield test.findOne({hello: 'thom'});
         res.should.have.keys(['hello', '_id']);
         res.hello.should.equal('thom');
       })(done);
@@ -54,8 +56,8 @@ describe('collection', function () {
     it('should update', function (done) {
       co(function *() {
         var res = yield test.update({ hello: 'world' }, { hello: 'thom' });
-        res[0].should.equal(1);
-        res[1].should.have.keys(['updatedExisting', 'n', 'ok']);
+        res.result.should.have.keys(['nModified', 'n', 'ok']);
+        res.result.nModified.should.equal(1);
       })(done);
     });
   });
@@ -92,7 +94,7 @@ describe('collection', function () {
       co(function *() {
         var res = yield test.findAndModify({ hello: 'world' }, [['hello', 1]],
           {$set: { hello: 'thom' }});
-        res[0].should.have.keys(['_id', 'hello']);
+        res.value.should.have.keys(['_id', 'hello']);
         // res[0].hello.should.equal('thom'); // @TODO
       })(done);
     });
@@ -102,7 +104,7 @@ describe('collection', function () {
     it('should findAndRemove', function (done) {
       co(function *() {
         var res = yield test.findAndRemove({ hello: 'world' }, [['hello', 1]]);
-        res[0].should.have.keys(['_id', 'hello']);
+        res.value.should.have.keys(['_id', 'hello']);
       })(done);
     });
   });
