@@ -121,7 +121,7 @@ describe('cursor', function () {
         res.should.have.keys(['cursor', 'isMultiKey', 'n', 'nscannedObjects',
           'nscanned', 'nscannedObjectsAllPlans', 'nscannedAllPlans',
           'scanAndOrder', 'indexOnly', 'nYields', 'nChunkSkips', 'millis',
-          'indexBounds', 'allPlans', 'server']);
+          'allPlans', 'server', 'filterSet', 'stats']);
       })(done);
     });
   });

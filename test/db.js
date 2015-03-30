@@ -98,6 +98,10 @@ describe('db', function () {
     });
   });
 
+  // @TODO: tests 'addUser', 'authenticate', 'logout' and 'removeUser' seem to run in parallel. 
+  //        Which throws errors when calling addUser('thom') when this user already exists.
+  //        At the moment test depend on addUser() call in 'addUser' test.
+  //        Better to make test independent
   describe('addUser', function () {
     // @TODO: Better test?
     it('should add user', function (done) {
@@ -112,7 +116,6 @@ describe('db', function () {
   describe('authenticate', function () {
     it('should authenticate user', function (done) {
       co(function *() {
-        yield db.addUser('thom', 'pass123');
         var res = yield db.authenticate('thom', 'pass123');
         res.should.equal(true);
         yield db.close();
@@ -123,7 +126,6 @@ describe('db', function () {
   describe('logout', function () {
     it('should logout user', function (done) {
       co(function *() {
-        yield db.addUser('thom', 'pass123');
         var res = yield db.authenticate('thom', 'pass123');
         res.should.equal(true);
         res = yield db.logout();
@@ -136,7 +138,6 @@ describe('db', function () {
     // @TODO: Better test?
     it('should remove user', function (done) {
       co(function *() {
-        yield db.addUser('thom', 'pass123');
         var res = yield db.removeUser('thom');
         res.should.equal(true);
       })(done);
@@ -195,7 +196,7 @@ describe('db', function () {
       co(function *() {
 
         var errs = yield db.lastError();
-        errs[0].should.have.keys(['n', 'connectionId', 'err', 'ok']);
+        errs[0].should.have.keys(['n', 'connectionId', 'err', 'ok', 'syncMillis', 'writtenTo']);
       })(done);
     });
   });
@@ -243,8 +244,7 @@ describe('db', function () {
     it('should return cursor info', function (done) {
       co(function *() {
         var res = yield db.cursorInfo();
-        res.should.have.keys(['totalOpen', 'clientCursors_size','timedOut',
-          'ok']);
+        res.should.have.keys(['totalOpen', 'clientCursors_size','timedOut', 'ok', 'note', 'pinned', 'totalNoTimeout']);
       })(done);
     });
   });
@@ -296,7 +296,7 @@ describe('db', function () {
         var res = yield db.stats();
         res.should.have.keys(['db', 'collections', 'objects', 'avgObjSize',
           'dataSize', 'storageSize', 'numExtents', 'indexes', 'indexSize',
-          'fileSize', 'nsSizeMB', 'dataFileVersion', 'ok']);
+          'fileSize', 'nsSizeMB', 'dataFileVersion', 'ok', 'extentFreeList']);
       })(done);
     });
   });
