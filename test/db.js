@@ -1,4 +1,4 @@
-  
+
 var mongo = require('mongodb');
 var setup = require('./setup');
 var comongo = require('../');
@@ -81,7 +81,7 @@ describe('db', function () {
     it('should return all collections', function (done) {
       co(function *() {
         var collections = yield db.collections();
-        collections.should.have.lengthOf(2);
+        collections.should.have.lengthOf(1);
         collections.forEach(function (collection) {
           collection.should.be.instanceOf(comongo.Collection);
         });
@@ -98,7 +98,7 @@ describe('db', function () {
     });
   });
 
-  // @TODO: tests 'addUser', 'authenticate', 'logout' and 'removeUser' seem to run in parallel. 
+  // @TODO: tests 'addUser', 'authenticate', 'logout' and 'removeUser' seem to run in parallel.
   //        Which throws errors when calling addUser('thom') when this user already exists.
   //        At the moment test depend on addUser() call in 'addUser' test.
   //        Better to make test independent
@@ -300,10 +300,9 @@ describe('db', function () {
         var res = yield db.stats();
         res.should.have.keys(['db', 'collections', 'objects', 'avgObjSize',
           'dataSize', 'storageSize', 'numExtents', 'indexes', 'indexSize',
-          'fileSize', 'nsSizeMB', 'dataFileVersion', 'ok', 'extentFreeList']);
+          'ok']);
       })(done);
     });
   });
 
 });
-

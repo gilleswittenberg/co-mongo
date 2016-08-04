@@ -118,10 +118,8 @@ describe('cursor', function () {
     it('should return cursor', function (done) {
       co(function *() {
         var res = yield test.find().explain();
-        res.should.have.keys(['cursor', 'isMultiKey', 'n', 'nscannedObjects',
-          'nscanned', 'nscannedObjectsAllPlans', 'nscannedAllPlans',
-          'scanAndOrder', 'indexOnly', 'nYields', 'nChunkSkips', 'millis',
-          'allPlans', 'server', 'filterSet', 'stats']);
+        res.should.have.keys(['queryPlanner', 'executionStats', 'serverInfo',
+          'ok']);
       })(done);
     });
   });
