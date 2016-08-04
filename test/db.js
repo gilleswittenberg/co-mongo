@@ -106,7 +106,7 @@ describe('db', function () {
     // @TODO: Better test?
     it('should add user', function (done) {
       co(function *() {
-        var res = yield db.addUser('thom', 'pass123');
+        var res = yield db.addUser('thom', 'pass123', { roles: ['readWrite'] });
         res[0].should.have.keys(['user', 'pwd']);
         res[0].user.should.equal('thom');
       })(done);

@@ -12,6 +12,10 @@ This is project has two goals:
 npm install co-mongo
 ```
 
+## Tests
+ * Make sure to have mongodb installed locally
+ * Run `npm test`
+
 ## Example
 
 ```js
